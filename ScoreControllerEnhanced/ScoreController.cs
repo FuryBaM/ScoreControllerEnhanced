@@ -5,6 +5,8 @@ using LemonUI.Menus;
 using LemonUI.Scaleform;
 using Score_Controller;
 using System;
+using System.IO;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace ScoreControllerEnhanced
@@ -16,12 +18,15 @@ namespace ScoreControllerEnhanced
 
         private static NativeListItem<string> mainScoreCollection;
         private static NativeListItem<string> mainScoreTrack;
-        private static NativeListItem<string> mainScoreIntensity;
+        private static NativeListItem<string> mainScoreProfiles;
+        private static NativeListItem<string> mainScoreProfileEvents;
         private static NativeCheckboxItem mainMuteSound;
         private static NativeCheckboxItem mainMuteRadio;
         private static NativeCheckboxItem mainDisableWanted;
         private static NativeCheckboxItem mainDisableFlight;
         private static NativeCheckboxItem mainDisableOnDeath;
+
+        private static JsonRoot root;
 
         [Flags]
         private enum ControlFlags
@@ -37,7 +42,7 @@ namespace ScoreControllerEnhanced
 
         private static int controlFlags = 0;
 
-        private static ScoreTrack currentScoreTrack = null;
+        private static JsonTrack currentScoreTrack = null;
         private static string currentMusicEvent = null;
         private static string currentAudioScene = null;
 
@@ -55,9 +60,19 @@ namespace ScoreControllerEnhanced
 
         public ScoreController()
         {
-            Tracks.AddTracks();
-            Collections.AddCollections();
-            Intensities.AddIntensities();
+            string scriptsDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            string jsonPath = Path.Combine(scriptsDir ?? ".", "Score Controller Enhanced", "score_controls.json");
+
+            try
+            {
+                root = JsonLoader.Load(jsonPath);
+            }
+            catch (Exception ex)
+            {
+                GTA.UI.Notification.PostTicker("JSON load failed: " + ex.Message, false);
+                GTA.UI.Notification.PostTicker("JSON path: " + jsonPath, false);
+                return;
+            }
 
             pool = new ObjectPool();
 
@@ -66,17 +81,22 @@ namespace ScoreControllerEnhanced
             mainScoreCollection = new NativeListItem<string>(
                 Text.mainScoreCollectionTitle,
                 Text.mainScoreCollectionDescr,
-                Collections.CollectionsList.ConvertAll(x => x.Title).ToArray());
+                JsonRoot.GetCollectionTitles(root));
 
             mainScoreTrack = new NativeListItem<string>(
                 Text.mainScoreTrackTitle,
                 Text.mainScoreTrackDescr,
-                Tracks.scoreLists[0].ToArray());
+                JsonRoot.GetTrackTitles(root, 0));
 
-            mainScoreIntensity = new NativeListItem<string>(
-                Text.mainScoreIntensityTitle,
-                Text.mainScoreIntensityDescr,
-                Intensities.listIntensities.ToArray());
+            mainScoreProfiles = new NativeListItem<string>(
+                "Profile",
+                "Select a profile.",
+                JsonRoot.GetProfileNames(root, 0, 0));
+
+            mainScoreProfileEvents = new NativeListItem<string>(
+                "Profile Event",
+                "Select a profile event.",
+                JsonRoot.GetProfileEventNames(root, 0, 0, 0));
 
             mainMuteSound = new NativeCheckboxItem(Text.mainMuteSoundTitle, Text.mainMuteSoundDescr, false);
             mainMuteRadio = new NativeCheckboxItem(Text.mainMuteRadioTitle, Text.mainMuteRadioDescr, false);
@@ -86,7 +106,7 @@ namespace ScoreControllerEnhanced
 
             mainMenu.Add(mainScoreCollection);
             mainMenu.Add(mainScoreTrack);
-            mainMenu.Add(mainScoreIntensity);
+            mainMenu.Add(mainScoreProfiles);
             mainMenu.Add(mainMuteSound);
             mainMenu.Add(mainMuteRadio);
             mainMenu.Add(mainDisableWanted);
@@ -100,7 +120,8 @@ namespace ScoreControllerEnhanced
 
             mainScoreCollection.ItemChanged += OnSelectedScoreCollection;
             mainScoreTrack.ItemChanged += OnSelectedScoreTrack;
-            mainScoreIntensity.ItemChanged += OnSelectedScoreIntensity;
+            mainScoreProfiles.ItemChanged += OnSelectedScoreProfiles;
+            mainScoreProfileEvents.ItemChanged += OnSelectedScoreProfileEvents;
 
             mainMuteSound.CheckboxChanged += OnCheckboxChangedMuteSound;
             mainMuteRadio.CheckboxChanged += OnCheckboxChangedMuteRadio;
@@ -113,9 +134,9 @@ namespace ScoreControllerEnhanced
 
             SetControlFlag(ControlFlags.IsDisableOnDeath);
 
-            if (Tracks.scoreLists.Count > 0 && Tracks.scoreLists[0].Count > 0)
+            if (root.Collections.Count > 0 && root.Collections[0].Tracks.Count > 0)
             {
-                currentScoreTrack = Tracks.FindTrack(Tracks.scoreLists[0][0].ToString());
+                currentScoreTrack = root.Collections[0].Tracks[0];
             }
         }
 
@@ -123,43 +144,126 @@ namespace ScoreControllerEnhanced
         {
             int collectionIndex = mainScoreCollection.SelectedIndex;
 
-            if (collectionIndex < 0 || collectionIndex >= Tracks.scoreLists.Count)
+            if (root?.Collections == null)
+                return;
+
+            if (collectionIndex < 0 || collectionIndex >= root.Collections.Count)
                 return;
 
             mainScoreTrack = new NativeListItem<string>(
                 Text.mainScoreTrackTitle,
                 Text.mainScoreTrackDescr,
-                Tracks.scoreLists[collectionIndex].ToArray());
+                JsonRoot.GetTrackTitles(root, collectionIndex));
 
             mainMenu.Items[1] = mainScoreTrack;
             mainScoreTrack.ItemChanged += OnSelectedScoreTrack;
 
-            if (Tracks.scoreLists[collectionIndex].Count > 0)
+            if (root.Collections[collectionIndex].Tracks != null && root.Collections[collectionIndex].Tracks.Count > 0)
             {
-                currentScoreTrack = Tracks.FindTrack(Tracks.scoreLists[collectionIndex][0]);
+                currentScoreTrack = root.Collections[collectionIndex].Tracks[0];
             }
             else
             {
                 currentScoreTrack = null;
             }
+
+            mainScoreProfiles = new NativeListItem<string>(
+                "Profile",
+                "Select a profile.",
+                JsonRoot.GetProfileNames(root, collectionIndex, 0));
+
+            mainMenu.Items[2] = mainScoreProfiles;
+            mainScoreProfiles.ItemChanged += OnSelectedScoreProfiles;
+
+            mainScoreProfileEvents = new NativeListItem<string>(
+                "Profile Event",
+                "Select a profile event.",
+                JsonRoot.GetProfileEventNames(root, collectionIndex, 0, 0));
+
+            mainMenu.Items[3] = mainScoreProfileEvents;
+            mainScoreProfileEvents.ItemChanged += OnSelectedScoreProfileEvents;
         }
 
         private void OnSelectedScoreTrack(object sender, ItemChangedEventArgs<string> e)
         {
             int collectionIndex = mainScoreCollection.SelectedIndex;
 
-            if (collectionIndex < 0 || collectionIndex >= Tracks.scoreLists.Count)
+            if (root?.Collections == null)
                 return;
 
-            if (e.Index < 0 || e.Index >= Tracks.scoreLists[collectionIndex].Count)
+            if (collectionIndex < 0 || collectionIndex >= root.Collections.Count)
                 return;
 
-            currentScoreTrack = Tracks.FindTrack(Tracks.scoreLists[collectionIndex][e.Index]);
+            var tracks = root.Collections[collectionIndex].Tracks;
+            if (tracks == null || e.Index < 0 || e.Index >= tracks.Count)
+                return;
+
+            currentScoreTrack = tracks[e.Index];
+
+            mainScoreProfiles = new NativeListItem<string>(
+                "Profile",
+                "Select a profile.",
+                JsonRoot.GetProfileNames(root, collectionIndex, e.Index));
+
+            mainMenu.Items[2] = mainScoreProfiles;
+            mainScoreProfiles.ItemChanged += OnSelectedScoreProfiles;
+
+            mainScoreProfileEvents = new NativeListItem<string>(
+                "Profile Event",
+                "Select a profile event.",
+                JsonRoot.GetProfileEventNames(root, collectionIndex, e.Index, 0));
+
+            mainMenu.Items[3] = mainScoreProfileEvents;
+            mainScoreProfileEvents.ItemChanged += OnSelectedScoreProfileEvents;
+        }
+        private void OnSelectedScoreProfiles(object sender, ItemChangedEventArgs<string> e)
+        {
+            if (currentScoreTrack == null)
+                return;
+
+            int collectionIndex = mainScoreCollection.SelectedIndex;
+            int trackIndex = mainScoreTrack.SelectedIndex;
+
+            if (root?.Collections == null)
+                return;
+
+            if (collectionIndex < 0 || collectionIndex >= root.Collections.Count)
+                return;
+
+            var tracks = root.Collections[collectionIndex].Tracks;
+            if (tracks == null || trackIndex < 0 || trackIndex >= tracks.Count)
+                return;
+
+            mainScoreProfileEvents = new NativeListItem<string>(
+                "Profile Event",
+                "Select a profile event.",
+                JsonRoot.GetProfileEventNames(root, collectionIndex, trackIndex, e.Index));
+
+            mainMenu.Items[3] = mainScoreProfileEvents;
+            mainScoreProfileEvents.ItemChanged += OnSelectedScoreProfileEvents;
         }
 
-        private void OnSelectedScoreIntensity(object sender, ItemChangedEventArgs<string> e)
+        private void OnSelectedScoreProfileEvents(object sender, ItemChangedEventArgs<string> e)
         {
-            SetIntensity();
+            if (mainScoreProfileEvents == null)
+                return;
+
+            if (e.Index < 0 || e.Index >= mainScoreProfileEvents.Items.Count)
+                return;
+
+            int collectionIndex = mainScoreCollection.SelectedIndex;
+            int trackIndex = mainScoreTrack.SelectedIndex;
+            int profileIndex = mainScoreProfiles.SelectedIndex;
+
+            var profileNames = JsonRoot.GetProfileNames(root, collectionIndex, trackIndex);
+            if (profileIndex < 0 || profileIndex >= profileNames.Length)
+                return;
+
+            var profile = JsonRoot.FindProfileByName(root, profileNames[profileIndex]);
+            if (profile?.Events == null || e.Index >= profile.Events.Count)
+                return;
+
+            TriggerEvent(profile.Events[e.Index].Event);
         }
 
         private void OnCheckboxChangedDisableOnDeath(object sender, EventArgs e)
@@ -241,13 +345,15 @@ namespace ScoreControllerEnhanced
             {
                 mainScoreCollection.Enabled = false;
                 mainScoreTrack.Enabled = false;
-                mainScoreIntensity.Enabled = true;
+                mainScoreProfiles.Enabled = false;
+                mainScoreProfileEvents.Enabled = true;
             }
             else
             {
                 mainScoreCollection.Enabled = true;
                 mainScoreTrack.Enabled = true;
-                mainScoreIntensity.Enabled = false;
+                mainScoreProfiles.Enabled = true;
+                mainScoreProfileEvents.Enabled = false;
             }
 
             if (HasControlFlag(ControlFlags.IsRadioMuted))
@@ -258,13 +364,6 @@ namespace ScoreControllerEnhanced
                 Game.DisableControlThisFrame(GTA.Control.RadioWheelLeftRight);
                 Game.DisableControlThisFrame(GTA.Control.RadioWheelUpDown);
             }
-
-#if DEBUG
-            if (currentScoreTrack != null)
-            {
-                GTA.UI.Notification.PostTicker("The current track is: " + currentScoreTrack.Title, false);
-            }
-#endif
 
             if (HasControlFlag(ControlFlags.IsDisableOnDeath))
             {
@@ -335,6 +434,27 @@ namespace ScoreControllerEnhanced
             Function.Call(Hash.SET_AUDIO_FLAG, name, false);
         }
 
+        private static string GetSelectedProfileEvent()
+        {
+            int collectionIndex = mainScoreCollection.SelectedIndex;
+            int trackIndex = mainScoreTrack.SelectedIndex;
+            int profileIndex = mainScoreProfiles.SelectedIndex;
+            int profileEventIndex = mainScoreProfileEvents.SelectedIndex;
+
+            var profileNames = JsonRoot.GetProfileNames(root, collectionIndex, trackIndex);
+            if (profileIndex < 0 || profileIndex >= profileNames.Length)
+                return null;
+
+            var profile = JsonRoot.FindProfileByName(root, profileNames[profileIndex]);
+            if (profile?.Events == null)
+                return null;
+
+            if (profileEventIndex < 0 || profileEventIndex >= profile.Events.Count)
+                return null;
+
+            return profile.Events[profileEventIndex].Event;
+        }
+
         private static void PlayScore()
         {
             if (currentScoreTrack == null)
@@ -348,72 +468,17 @@ namespace ScoreControllerEnhanced
 
             TriggerEvent(currentScoreTrack.Event);
 
-            string supportingEvent = "BTL_IDLE";
-
-            switch (currentScoreTrack.Stems)
+            string profileEvent = GetSelectedProfileEvent();
+            if (!string.IsNullOrWhiteSpace(profileEvent))
             {
-                case 3:
-                    supportingEvent = Intensities.EventsList3[0];
-                    break;
-                case 4:
-                    supportingEvent = Intensities.EventsList4[0];
-                    break;
-                case 5:
-                    supportingEvent = Intensities.EventsList5[0];
-                    break;
-                case 6:
-                    supportingEvent = Intensities.EventsList6[0];
-                    break;
-                case 7:
-                    supportingEvent = Intensities.EventsList7[0];
-                    break;
-                case 8:
-                    supportingEvent = Intensities.EventsList8[0];
-                    break;
+                TriggerEvent(profileEvent);
             }
-
-            TriggerEvent(supportingEvent);
-            mainScoreIntensity.SelectedIndex = 0;
         }
 
         private static void StopScore()
         {
             ClearControlFlag(ControlFlags.IsScorePlaying);
             TriggerEvent("GTA_ONLINE_STOP_SCORE");
-        }
-
-        private static void SetIntensity()
-        {
-            if (currentScoreTrack == null)
-                return;
-
-            if (currentScoreTrack.Stems == 1 || currentScoreTrack.Stems == 2)
-                return;
-
-            if (mainScoreIntensity.SelectedIndex < 0 || mainScoreIntensity.SelectedIndex >= mainScoreIntensity.Items.Count)
-                return;
-
-            ScoreIntensity intensity = Intensities.FindIntensity(
-                mainScoreIntensity.Items[mainScoreIntensity.SelectedIndex].ToString());
-
-            if (intensity == null)
-                return;
-
-            int index = Intensities.IntensitiesList.IndexOf(intensity);
-            if (index < 0)
-                return;
-
-            if (currentScoreTrack.Stems == 5)
-                TriggerEvent(Intensities.EventsList5[index]);
-
-            if (currentScoreTrack.Stems == 6)
-                TriggerEvent(Intensities.EventsList6[index]);
-
-            if (currentScoreTrack.Stems == 7)
-                TriggerEvent(Intensities.EventsList7[index]);
-
-            if (currentScoreTrack.Stems == 8)
-                TriggerEvent(Intensities.EventsList8[index]);
         }
 
         private static void MuteSound()
