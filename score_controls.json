@@ -1,0 +1,209 @@
+{
+  "Collections": [
+    {
+      "Name": "Lowriders",
+      "Title": "Lowriders",
+      "Event": "LOWRIDER",
+      "Tracks": [
+        { "Name": "lowrider_fj10", "Title": "Lowrider Funk Jam 10", "Event": "RC_LOWRIDER_1", "ProfileNames": ["Stem8"] },
+        { "Name": "lowrider_fj11", "Title": "Lowrider Funk Jam 11", "Event": "RC_LOWRIDER_2", "ProfileNames": ["Stem8"] },
+        { "Name": "lowrider_fj17", "Title": "Lowrider Funk Jam 17", "Event": "RC_LOWRIDER_3", "ProfileNames": ["Stem8"] },
+        { "Name": "lowrider_fj20", "Title": "Lowrider Funk Jam 20", "Event": "RC_LOWRIDER_4", "ProfileNames": ["Stem8"] },
+        { "Name": "lowrider_gtav7", "Title": "Lowrider GTAV 7", "Event": "RC_LOWRIDER_5", "ProfileNames": ["Stem8"] },
+        { "Name": "lowrider_gtav62", "Title": "Lowrider GTAV 62", "Event": "RC_LOWRIDER_6", "ProfileNames": ["Stem8"] },
+        { "Name": "lowrider_low11", "Title": "Lowrider Low 11", "Event": "RC_LOWRIDER_7", "ProfileNames": ["Stem8"] },
+        { "Name": "lowrider_low12", "Title": "Lowrider Low 12", "Event": "RC_LOWRIDER_8", "ProfileNames": ["Stem8"] },
+        { "Name": "lowrider_low13", "Title": "Lowrider Low 13", "Event": "RC_LOWRIDER_9", "ProfileNames": ["Stem8"] },
+        { "Name": "lowrider_mission8", "Title": "Lowrider Mission 8", "Event": "RC_LOWRIDER_10", "ProfileNames": ["Stem8"] },
+        { "Name": "lowrider_supa18", "Title": "Lowrider Supa 18", "Event": "RC_LOWRIDER_11", "ProfileNames": ["Stem8"] }
+      ]
+    },
+    {
+      "Name": "Power Play",
+      "Title": "Executive",
+      "Event": "EXECUTIVE",
+      "Tracks": [
+        { "Name": "powerplay_bespoke", "Title": "Power Play Bespoke", "Event": "RC_EXECUTIVE_1", "ProfileNames": ["Stem6"] },
+        { "Name": "powerplay_bespoke", "Title": "Power Play Car Steal", "Event": "RC_EXECUTIVE_2", "ProfileNames": ["Stem6"] },
+        { "Name": "powerplay_bespoke", "Title": "Power Play Cliff Twelve", "Event": "RC_EXECUTIVE_3", "ProfileNames": ["Stem6"] },
+        { "Name": "powerplay_bespoke", "Title": "Power Play Cliff Eighteen", "Event": "RC_EXECUTIVE_4", "ProfileNames": ["Stem6"] },
+        { "Name": "powerplay_bespoke", "Title": "Power Play GOT Move", "Event": "RC_EXECUTIVE_5", "ProfileNames": ["Stem6"] },
+        { "Name": "powerplay_bespoke", "Title": "Power Play Popo", "Event": "RC_EXECUTIVE_6", "ProfileNames": ["Stem6"] },
+        { "Name": "powerplay_bespoke", "Title": "Power Play Psycho", "Event": "RC_EXECUTIVE_7", "ProfileNames": ["Stem6"] },
+        { "Name": "powerplay_bespoke", "Title": "Power Play Red Sq", "Event": "RC_EXECUTIVE_8", "ProfileNames": ["Stem6"] }
+      ]
+    },
+    {
+      "Name": "Southern San Andreas Super Sport Series",
+      "Title": "Assault",
+      "Event": "ASSAULT",
+      "Tracks": [
+        { "Name": "dlc_assault_tech_1", "Title": "Assault Tech One", "Event": "RC_ASSAULT_1", "ProfileNames": ["Stem6"] },
+        { "Name": "dlc_assault_tech_2", "Title": "Assault Tech Two", "Event": "RC_ASSAULT_2", "ProfileNames": ["Stem6"] },
+        { "Name": "dlc_assault_tech_3", "Title": "Assault Tech Three", "Event": "RC_ASSAULT_3", "ProfileNames": ["Stem6"] },
+        { "Name": "dlc_assault_tech_4", "Title": "Assault Tech Four", "Event": "RC_ASSAULT_4", "ProfileNames": ["Stem6"] }
+      ]
+    },
+    {
+      "Name": "The Doomsday Heist",
+      "Title": "Doomsday",
+      "Event": "HEIST2",
+      "Tracks": [
+        { "Name": "cmh_heist_1", "Title": "CMH Heist One", "Event": "RC_HEIST2_1", "ProfileNames": ["Stem8"] },
+        { "Name": "cmh_heist_2", "Title": "CMH Heist Two", "Event": "RC_HEIST2_2", "ProfileNames": ["Stem8"] },
+        { "Name": "cmh_heist_3", "Title": "CMH Heist Three", "Event": "RC_HEIST2_3", "ProfileNames": ["Stem8"] },
+        { "Name": "cmh_heist_4", "Title": "CMH Tech One", "Event": "RC_HEIST2_4", "ProfileNames": ["Stem6"] },
+        { "Name": "cmh_heist_5", "Title": "CMH Tech Two", "Event": "RC_HEIST2_5", "ProfileNames": ["Stem6"] },
+        { "Name": "cmh_heist_6", "Title": "CMH Tech Three", "Event": "RC_HEIST2_6", "ProfileNames": ["Stem6"] },
+        { "Name": "cmh_heist_7", "Title": "CMH Tech Four", "Event": "RC_HEIST2_7", "ProfileNames": ["Stem6"] }
+      ]
+    },
+    {
+      "Name": "Diamond Casino Heist",
+      "Title": "Diamond Casino Heist",
+      "Event": "HEIST3",
+      "Tracks": [
+        { "Name": "casino_heist_1", "Title": "Casino Heist One", "Event": "SC_CASINO_HEIST_1_START", "ProfileNames": ["Stem8"] },
+        { "Name": "casino_heist_2", "Title": "Casino Heist Two", "Event": "MP_CHF_START", "ProfileNames": ["Stem8"] },
+        { "Name": "casino_heist_4", "Title": "Casino Heist Four", "Event": "RC_GUNRUNNING_1", "ProfileNames": ["Stem8"] },
+        { "Name": "casino_heist_8", "Title": "Casino Heist Eight", "Event": "RC_GUNRUNNING_1", "ProfileNames": ["Stem8"] }
+      ]
+    },
+    {
+      "Name": "Smuggler's Run",
+      "Title": "Smuggler's Run",
+      "Event": "SMUGGLER",
+      "Tracks": [
+        { "Name": "smuggler_track_inf", "Title": "Smuggler Track INF", "Event": "RC_SMUGGLER_1", "ProfileNames": ["Stem6"] },
+        { "Name": "smuggler_track_s1", "Title": "Smuggler Track S1", "Event": "RC_SMUGGLER_2", "ProfileNames": ["Stem6"] },
+        { "Name": "smuggler_track_s2", "Title": "Smuggler Track S2", "Event": "RC_SMUGGLER_3", "ProfileNames": ["Stem6"] },
+        { "Name": "smuggler_track_s3", "Title": "Smuggler Track S3", "Event": "RC_SMUGGLER_4", "ProfileNames": ["Stem6"] },
+        { "Name": "smuggler_track_s4", "Title": "Smuggler Track S4", "Event": "RC_SMUGGLER_5", "ProfileNames": ["Stem6"] }
+      ]
+    },
+    {
+      "Name": "Gunrunning",
+      "Title": "Gunrunning",
+      "Event": "GUNRUNNING",
+      "Tracks": [
+        { "Name": "gunrunning_track_cs1", "Title": "Gunrunning Track CS One", "Event": "RC_GUNRUNNING_1", "ProfileNames": ["Stem6"] },
+        { "Name": "gunrunning_track_cs5", "Title": "Gunrunning Track CS Five", "Event": "RC_GUNRUNNING_2", "ProfileNames": ["Stem8"] },
+        { "Name": "gunrunning_track_cs9", "Title": "Gunrunning Track CS Nine", "Event": "RC_GUNRUNNING_3", "ProfileNames": ["Stem4"] },
+        { "Name": "gunrunning_track_gr2", "Title": "Gunrunning Track GR 2", "Event": "RC_GUNRUNNING_4", "ProfileNames": ["Stem6"] },
+        { "Name": "gunrunning_track_gr3", "Title": "Gunrunning Track GR 3", "Event": "RC_GUNRUNNING_5", "ProfileNames": ["Stem6"] },
+        { "Name": "gunrunning_track_gr4", "Title": "Gunrunning Track GR 4", "Event": "RC_GUNRUNNING_6", "ProfileNames": ["Stem6"] },
+        { "Name": "gunrunning_track_gr5", "Title": "Gunrunning Track GR 5", "Event": "RC_GUNRUNNING_7", "ProfileNames": ["Stem6"] },
+        { "Name": "gunrunning_track_gr9", "Title": "Gunrunning Track GR 9", "Event": "RC_GUNRUNNING_8", "ProfileNames": ["Stem6"] },
+        { "Name": "gunrunning_track_gr12", "Title": "Gunrunning Track GR 12", "Event": "RC_GUNRUNNING_9", "ProfileNames": ["Stem6"] },
+        { "Name": "gunrunning_track_gr13", "Title": "Gunrunning Track GR 13", "Event": "RC_GUNRUNNING_10", "ProfileNames": ["Stem6"] },
+        { "Name": "gunrunning_track_gr17", "Title": "Gunrunning Track GR 17", "Event": "RC_GUNRUNNING_11", "ProfileNames": ["Stem6"] },
+        { "Name": "gunrunning_track_gr18", "Title": "Gunrunning Track GR 18", "Event": "RC_GUNRUNNING_12", "ProfileNames": ["Stem6"] }
+      ]
+    },
+    {
+      "Name": "Arena War",
+      "Title": "Arena War",
+      "Event": "MC_AW_MUSIC",
+      "Tracks": [
+        { "Name": "dlc_awxm2018_theme_5_stems", "Title": "Arena War Theme", "Event": "AW_LOBBY_MUSIC_START_STA", "ProfileNames": ["Stem5"] },
+        { "Name": "dlc_aw_track_1", "Title": "AW Track One", "Event": "MC_AW_MUSIC_1", "ProfileNames": ["Stem5"] },
+        { "Name": "dlc_aw_track_2", "Title": "AW Track Two", "Event": "MC_AW_MUSIC_2", "ProfileNames": ["Stem5"] },
+        { "Name": "dlc_aw_track_3", "Title": "AW Track Three", "Event": "MC_AW_MUSIC_3", "ProfileNames": ["Stem5"] },
+        { "Name": "dlc_aw_track_4", "Title": "AW Track Four", "Event": "MC_AW_MUSIC_4", "ProfileNames": ["Stem5"] },
+        { "Name": "dlc_aw_track_5", "Title": "AW Track Five", "Event": "MC_AW_MUSIC_5", "ProfileNames": ["Stem5"] },
+        { "Name": "dlc_aw_track_6", "Title": "AW Track Six", "Event": "MC_AW_MUSIC_6", "ProfileNames": ["Stem5"] },
+        { "Name": "dlc_aw_track_7", "Title": "AW Track Seven", "Event": "MC_AW_MUSIC_7", "ProfileNames": ["Stem5"] },
+        { "Name": "dlc_aw_track_8", "Title": "AW Track Eight", "Event": "MC_AW_MUSIC_8", "ProfileNames": ["Stem5"] }
+      ]
+    },
+    {
+      "Name": "Bikers",
+      "Title": "Bikers",
+      "Event": "BIKER",
+      "Tracks": [
+        { "Name": "biker_buffalo", "Title": "Biker Buffalo", "Event": "RC_BIKER_1", "ProfileNames": ["Stem6"] },
+        { "Name": "biker_driving", "Title": "Biker Driving", "Event": "RC_BIKER_2", "ProfileNames": ["Stem6"] },
+        { "Name": "biker_eyes", "Title": "Biker Eyes", "Event": "RC_BIKER_3", "ProfileNames": ["Stem6"] },
+        { "Name": "biker_gaylord", "Title": "Biker Gaylord", "Event": "RC_BIKER_4", "ProfileNames": ["Stem6"] },
+        { "Name": "biker_horse_rap", "Title": "Biker Horse Rap", "Event": "RC_BIKER_5", "ProfileNames": ["Stem6"] },
+        { "Name": "biker_idea_1", "Title": "Biker Idea One", "Event": "RC_BIKER_6", "ProfileNames": ["Stem6"] },
+        { "Name": "biker_idea_3", "Title": "Biker Idea Three", "Event": "RC_BIKER_7", "ProfileNames": ["Stem6"] },
+        { "Name": "biker_idea_5", "Title": "Biker Idea Five", "Event": "RC_BIKER_8", "ProfileNames": ["Stem6"] },
+        { "Name": "biker_idea_7", "Title": "Biker Idea Seven", "Event": "RC_BIKER_9", "ProfileNames": ["Stem6"] },
+        { "Name": "biker_idea_8", "Title": "Biker Idea Eight", "Event": "RC_BIKER_10", "ProfileNames": ["Stem6"] },
+        { "Name": "biker_jaguar", "Title": "Biker Jaguar", "Event": "RC_BIKER_11", "ProfileNames": ["Stem6"] },
+        { "Name": "biker_strings", "Title": "Biker Strings", "Event": "RC_BIKER_12", "ProfileNames": ["Stem6"] },
+        { "Name": "biker_take_me_back", "Title": "Biker Take Me Back", "Event": "RC_BIKER_13", "ProfileNames": ["Stem6"] }
+      ]
+    },
+    {
+      "Name": "Woody Jackson's Tracks",
+      "Title": "Woody Jackson",
+      "Event": null,
+      "Tracks": [
+        { "Name": "wdy_sapstick", "Title": "Sapstick", "Event": "MIC2_START", "ProfileNames": ["Stem7"] }
+      ]
+    },
+    {
+      "Name": "Arseny Tomilov's Tracks",
+      "Title": "Arseny Tomilov",
+      "Event": null,
+      "Tracks": [
+        { "Name": "ts_heist", "Title": "Heist", "Event": "TS_HEIST_START", "ProfileNames": ["Stem8"] },
+        { "Name": "ts_btp", "Title": "BTP", "Event": "TS_BTP_START", "ProfileNames": ["Stem8"] }
+      ]
+    }
+  ],
+  "Profiles": [
+    {
+      "Name": "Stem4",
+      "Title": "Stem 4",
+      "Description": "Reconstructed from EventsList4",
+      "Events": [
+        { "Name": "Low", "Event": "FAM2_COMING" },
+        { "Name": "Mid", "Event": "FAM2_LOST_HIM" },
+        { "Name": "High", "Event": "FAM2_SHOOTING" }
+      ]
+    },
+    {
+      "Name": "Stem5",
+      "Title": "Stem 5",
+      "Description": "Reconstructed from EventsList5",
+      "Events": [
+        { "Name": "Low", "Event": "AW_LOBBY_VEHICLE_SELECTION" },
+        { "Name": "Mid", "Event": "MC_AW_ALL_ON" },
+        { "Name": "High", "Event": "AW_ANNOUNCER_FINISHED" }
+      ]
+    },
+    {
+      "Name": "Stem6",
+      "Title": "Stem 6",
+      "Description": "Reconstructed from EventsList6",
+      "Events": [
+        { "Name": "Low", "Event": "BTL_SUSPENSE" },
+        { "Name": "Mid", "Event": "BTL_MED_INTENSITY" },
+        { "Name": "High", "Event": "BTL_VEHICLE_ACTION" }
+      ]
+    },
+    {
+      "Name": "Stem7",
+      "Title": "Stem 7",
+      "Description": "Reconstructed from EventsList7",
+      "Events": [
+        { "Name": "Low", "Event": "MIC2_START" },
+        { "Name": "Mid", "Event": "MIC3_FRANK_DOWN" },
+        { "Name": "High", "Event": "MIC2_LOSE_TRIADS" }
+      ]
+    },
+    {
+      "Name": "Stem8",
+      "Title": "Stem 8",
+      "Description": "Reconstructed from EventsList8",
+      "Events": [
+        { "Name": "Low", "Event": "BKR_GUNRUN_DEAL" },
+        { "Name": "Mid", "Event": "BG_SIGHTSEER_MID" },
+        { "Name": "High", "Event": "DROPZONE_ACTION_HIGH" }
+      ]
+    }
+  ]
+}

@@ -60,8 +60,8 @@ namespace ScoreControllerEnhanced
 
         public ScoreController()
         {
-            string scriptsDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            string jsonPath = Path.Combine(scriptsDir ?? ".", "Score Controller Enhanced", "score_controls.json");
+            string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+            string jsonPath = Path.Combine(baseDir, "Score Controller Enhanced", "score_controls.json");
 
             try
             {
@@ -107,6 +107,7 @@ namespace ScoreControllerEnhanced
             mainMenu.Add(mainScoreCollection);
             mainMenu.Add(mainScoreTrack);
             mainMenu.Add(mainScoreProfiles);
+            mainMenu.Add(mainScoreProfileEvents);
             mainMenu.Add(mainMuteSound);
             mainMenu.Add(mainMuteRadio);
             mainMenu.Add(mainDisableWanted);
@@ -313,7 +314,7 @@ namespace ScoreControllerEnhanced
                 DisplayMenu();
             }
 
-            if (Game.IsControlJustPressed(Controls.PrimaryAction) && IsMenuAvailable())
+            if (Game.IsControlJustPressed(Controls.PrimaryAction) && mainMenu.Visible)
             {
                 PlayScore();
             }
