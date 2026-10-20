@@ -264,7 +264,16 @@ namespace ScoreControllerEnhanced
             if (profile?.Events == null || e.Index >= profile.Events.Count)
                 return;
 
-            TriggerEvent(profile.Events[e.Index].Event);
+            var selected = profile.Events[e.Index];
+            if (string.IsNullOrWhiteSpace(selected.Event))
+            {
+                GTA.UI.Notification.PostTicker("REL profile has no verified native event mapping.", false);
+                return;
+            }
+            if (string.Equals(selected.Verification, "candidate", StringComparison.OrdinalIgnoreCase))
+                GTA.UI.Notification.PostTicker("Testing REL action candidate: " + selected.Event, false);
+
+            TriggerEvent(selected.Event);
         }
 
         private void OnCheckboxChangedDisableOnDeath(object sender, EventArgs e)
@@ -377,13 +386,25 @@ namespace ScoreControllerEnhanced
             }
         }
 
-        private static void TriggerEvent(string name)
+        // Native returns a boolean. A successful call is NOT proof of audible playback,
+        // but a rejected call must never mark the score as playing.
+        private static bool TriggerEvent(string name)
         {
-            if (string.IsNullOrEmpty(name))
-                return;
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                GTA.UI.Notification.PostTicker("Music event is not configured.", false);
+                return false;
+            }
 
-            Function.Call(Hash.TRIGGER_MUSIC_EVENT, name);
+            bool accepted = Function.Call<bool>(Hash.TRIGGER_MUSIC_EVENT, name);
+            if (!accepted)
+            {
+                GTA.UI.Notification.PostTicker("Music event rejected: " + name, false);
+                return false;
+            }
+
             currentMusicEvent = name;
+            return true;
         }
 
         private static void StartScene(string name)
@@ -461,13 +482,17 @@ namespace ScoreControllerEnhanced
             if (currentScoreTrack == null)
                 return;
 
+            if (string.Equals(currentScoreTrack.EventVerification, "candidate", StringComparison.OrdinalIgnoreCase))
+                GTA.UI.Notification.PostTicker("Testing REL start-action candidate: " + currentScoreTrack.Event, false);
+
+            if (!TriggerEvent(currentScoreTrack.Event))
+                return;
+
             SetControlFlag(ControlFlags.IsScorePlaying);
 
 #if DEBUG
             GTA.UI.Notification.PostTicker("Current track is: " + currentScoreTrack.Title, false);
 #endif
-
-            TriggerEvent(currentScoreTrack.Event);
 
             string profileEvent = GetSelectedProfileEvent();
             if (!string.IsNullOrWhiteSpace(profileEvent))
