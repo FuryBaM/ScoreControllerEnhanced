@@ -1,0 +1,48 @@
+name: REL profile extractor tests
+
+on:
+  push:
+    branches:
+      - feature/rel-music-profiles
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Validate REL profile exporter
+        run: python -m unittest discover -s tests -v
+      - name: Validate checked-in Cayo profile package
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          path = Path("profiles/cayo_perico_m05.json")
+          pkg = json.loads(path.read_text(encoding="utf-8"))
+          assert pkg["Track"]["Name"] == "hei4_fin_track_m05"
+          assert pkg["Track"]["EventVerification"] == "candidate"
+          assert len(pkg["Profile"]["Events"]) == 10
+          assert sum(len(x["StemMixes"]) for x in pkg["Profile"]["Events"]) == 28
+          assert all(x["SourceAction"].startswith("hei4_fin_") for x in pkg["Profile"]["Events"])
+          print("Cayo Finale M05 profile OK")
+          PY
+
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up MSBuild
+        uses: microsoft/setup-msbuild@v2
+      - name: Restore packages.config references
+        shell: pwsh
+        run: nuget restore ScoreControllerEnhanced/packages.config -PackagesDirectory packages
+      - name: Build .NET Framework 4.8 project
+        shell: pwsh
+        run: msbuild ScoreControllerEnhanced/ScoreControllerEnhanced.csproj /p:Configuration=Release /p:Platform=AnyCPU /verbosity:minimal
