@@ -49,7 +49,8 @@ def to_int(text):
         return None
 
 
-def extract(path, track, prefix, profile_name, candidate_events=False):
+def extract(path, track, prefix, profile_name, candidate_events=False,
+            collection_name="RELProfiles", collection_title="REL Profiles"):
     root = ET.parse(path).getroot()
     catalog = {}
     for item in root.findall("./Items/Item"):
@@ -113,11 +114,21 @@ def extract(path, track, prefix, profile_name, candidate_events=False):
             "StemMixes": variants,
         })
 
+    preferred = ["suspense_low", "suspense_high", "med_intensity", "driving",
+                 "airborne", "action", "vehicle_chase", "safe_room",
+                 "safe_room_agrro", "silent"]
+    def priority(action):
+        suffix = action["SourceAction"][len(prefix):]
+        return (preferred.index(suffix) if suffix in preferred else len(preferred), suffix)
+    actions.sort(key=priority)
+
     if not starts:
         raise ValueError("Track %r is absent from StartTrackAction lists" % track)
     if not actions:
         raise ValueError("No SetMoodAction matches prefix %r" % prefix)
     return {
+        "CollectionName": collection_name,
+        "CollectionTitle": collection_title,
         "Track": {
             "Name": track,
             "Title": track.upper(),
@@ -142,11 +153,14 @@ def main():
     parser.add_argument("--track", required=True)
     parser.add_argument("--prefix", required=True, help="e.g. hei4_fin_")
     parser.add_argument("--name", default="RelMusicProfile")
+    parser.add_argument("--collection-name", default="RELProfiles")
+    parser.add_argument("--collection-title", default="REL Profiles")
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--candidate-events", action="store_true",
                         help="Use REL action names as TEST candidates; not verified game events")
     args = parser.parse_args()
-    data = extract(args.xml, args.track, args.prefix, args.name, args.candidate_events)
+    data = extract(args.xml, args.track, args.prefix, args.name, args.candidate_events,
+                   args.collection_name, args.collection_title)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print("Wrote %s: %d modes, %d unique resolved mix hashes" % (
